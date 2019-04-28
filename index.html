@@ -1,0 +1,203 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style/materialize.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700">
+    <!-- TODO: Font awesome only used for the spinner. Use something lighter. -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="style/wptr_style.css">
+    <link rel="stylesheet" href="style/app.css">
+
+    <!-- the log controller is a special snowflake and is required here to catch all possible errors -->
+    <script type="text/javascript" src="controllers/logController.js"></script>
+</head>
+<body class="grey darken-4">
+
+<div id="splash-screen" class="view" style="z-index: 100000">
+    <div id="pre-splash-screen-mask" class="grey darken-4"
+         style="z-index: 100010; position: fixed; width: 100%; height: 100%;"></div>
+    <div>
+        <div class="toolbar-fixed grey darken-4" style="border: none; box-shadow: none !important;"></div>
+    </div>
+    <div class="page-preloading-wrapper grey darken-4">
+        <img src="https://via.placeholder.com/256" alt="splash screen">
+        <span>
+            APP NAME
+        </span>
+    </div>
+    <script>
+        setTimeout(() => document.querySelector('#pre-splash-screen-mask').style.opacity = '0', 400);
+    </script>
+</div>
+
+<div id="ptr">
+    <!-- Pull down arrow indicator -->
+    <i class="material-icons" style="display: none">arrow_forward</i>
+</div>
+<div id="view" class="view" style="overflow:auto;grid-area:body;"></div>
+<div data-component="bottom-toolbar-component"></div>
+<dialog id="error-dialog" class="modal grey darken-3" style="width: 95%">
+    <div class="modal-content">
+        <h4 id="error-modal-title"></h4>
+        <p id="error-modal-message"></p>
+    </div>
+    <div class="modal-footer grey darken-3">
+        <a class="modal-action modal-close btn-flat light-green">Ok !</a>
+    </div>
+</dialog>
+<dialog id="confirm-dialog" class="modal grey darken-3">
+    <div class="modal-content">
+        <h4 id="confirm-modal-title"></h4>
+        <p id="confirm-modal-message"></p>
+    </div>
+    <div class="modal-footer grey darken-3">
+        <a class="hide modal-action modal-close btn-flat light-green"
+           id="modal-ok-btn">Ok</a>
+        <a class="hide modal-action modal-close btn-flat grey"
+           id="modal-no-btn">Non</a>
+        <a class="hide modal-action modal-close btn-flat light-green"
+           id="modal-yes-btn">Oui</a>
+    </div>
+</dialog>
+<div id="console-log-container">
+    <i class="material-icons" id="clear-log-btn">delete_forever</i>
+    <pre></pre>
+    <script>
+        logCtrl.init();
+    </script>
+</div>
+
+
+
+<div id="templates">
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// VIEW BASE
+    /// -->
+    <template id="view-base">
+        <div data-component="navbar-component"></div>
+        <div class="body" id="view-body"></div>
+        <div class="page-preloading-mask active">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </div>
+    </template>
+
+
+
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// NAVBAR COMPONENT
+    /// -->
+    <template id="navbar-component">
+        <div class="navbar-fixed">
+            <nav id="navbar" class="grey darken-4 z-depth-2">
+                <div class="nav-wrapper">
+                    <ul class="left">
+                        <li id="back-button">
+                            <a onclick="app.navigateBack()" class="waves-effect">
+                                <i class="material-icons light-green-text text-darken-2">arrow_back</i>
+                            </a>
+                        </li>
+                        <li id="app-navbar-logo" class="light-green-text text-darken-2 hide" style="padding:0 0.75rem;">
+                            <i class="material-icons-outlined" style="line-height:50px;">home</i>
+                        </li>
+                    </ul>
+                    <a id="navbar-title" class="brand-logo light-green-text text-darken-2"></a>
+                </div>
+            </nav>
+        </div>
+    </template>
+
+
+
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BOTTOM TOOLBAR COMPONENT
+    /// -->
+    <template id="bottom-toolbar-component">
+        <div class="toolbar-fixed z-depth-2" id="bottom-toolbar">
+            <ul>
+            </ul>
+        </div>
+    </template>
+
+
+
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// NETWORK ERROR VIEW
+    /// -->
+    <template id="network-error-view">
+        <h3>Erreur réseau</h3>
+        Écran temporaire and stuff..
+    </template>
+
+
+
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// NETWORK ERROR VIEW
+    /// -->
+    <template id="example-view">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
+        </p>
+    </template>
+</div>
+
+
+
+<!--Framework (will 404 in dev)-->
+<script type="text/javascript" src="cordova.js"></script>
+<!--Libraries-->
+<script type="text/javascript" src="lib/materialize.min.js"></script>
+<script type="text/javascript" src="lib/axios.min.js"></script>
+<script type="text/javascript" src="lib/shortcuts.js"></script>
+<script type="text/javascript" src="lib/pouchdb.min.js"></script>
+<script type="text/javascript" src="lib/pouchdb.find.js"></script>
+<script type="text/javascript" src="lib/hammer.min.js"></script>
+<script type="text/javascript" src="lib/wptr.js"></script>
+<script type="text/javascript" src="lib/underscore.min.js"></script>
+<script type="text/javascript" src="lib/ms.js"></script>
+<script type="text/javascript" src="lib/regression.min.js"></script>
+<!--Models-->
+<!--Enums-->
+<script type="text/javascript" src="models/enums/deviceState.js"></script>
+<script type="text/javascript" src="controllers/storage/storageKey.js"></script>
+<!--Controllers-->
+<script type="text/javascript" src="controllers/dataController.js"></script>
+<script type="text/javascript" src="controllers/deviceController.js"></script>
+<script type="text/javascript" src="controllers/storage/storageController.js"></script>
+<script type="text/javascript" src="controllers/storage/cacheController.js"></script>
+<script type="text/javascript" src="controllers/viewController.js"></script>
+<!--Form objects-->
+<!--Components-->
+<script type="text/javascript" src="views/components/AbstractComponent.js"></script>
+<script type="text/javascript" src="views/components/NavBarComponent.js"></script>
+<script type="text/javascript" src="views/components/BottomToolbarComponent.js"></script>
+<!--Views-->
+<script type="text/javascript" src="views/AbstractView.js"></script>
+<script type="text/javascript" src="views/modals/ErrorModal.js"></script>
+<script type="text/javascript" src="views/modals/ConfirmModal.js"></script>
+<script type="text/javascript" src="views/NetworkErrorView.js"></script>
+<script type="text/javascript" src="views/ExampleView.js"></script>
+<!--App instance-->
+<script type="text/javascript" src="app.js"></script>
+
+<script>
+    app.log(`<span style="font-style:italic">Scripts loaded in ${
+        window.performance.now().toFixed(1)
+    }ms</span>`);
+</script>
+
+</body>
+</html>

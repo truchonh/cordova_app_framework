@@ -1,0 +1,8 @@
+# Dependency directories
+node_modules/
+
+#cordova
+platforms/
+
+# Jetbrains IDE
+.idea/
